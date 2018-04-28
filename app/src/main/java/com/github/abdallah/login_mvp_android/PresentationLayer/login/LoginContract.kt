@@ -1,5 +1,6 @@
 package com.github.abdallah.login_mvp_android.PresentationLayer.login
 
+import com.github.abdallah.login_mvp_android.DataLayer.Models.ErrorType
 import com.github.abdallah.login_mvp_android.DataLayer.Models.LoginModel
 import com.github.abdallah.login_mvp_android.PresentationLayer.BasePresenter
 import com.github.abdallah.login_mvp_android.PresentationLayer.BaseView
@@ -13,11 +14,9 @@ interface LoginContract {
 
         fun handleNetworkError()
 
-        fun handleNetworkSuccess()
+        fun handleLoginFail()
 
         fun handleLoginSuccess()
-
-        fun handleLoginFail()
     }
 
     interface Presenter : BasePresenter {
@@ -25,7 +24,7 @@ interface LoginContract {
 
         fun onSuccess(model: LoginModel)
 
-        fun onError()
+        fun onError(error: ErrorType)
     }
 
 }

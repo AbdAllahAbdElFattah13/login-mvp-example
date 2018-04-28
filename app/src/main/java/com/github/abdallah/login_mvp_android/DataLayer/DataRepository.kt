@@ -1,7 +1,9 @@
 package com.github.abdallah.login_mvp_android.DataLayer
 
+import com.github.abdallah.login_mvp_android.DataLayer.Models.ErrorType
 import com.github.abdallah.login_mvp_android.DataLayer.Models.LoginModel
 import java.util.*
+import java.util.regex.Pattern
 
 object DataRepository : Repository {
 
@@ -9,7 +11,20 @@ object DataRepository : Repository {
     //server call success and the server returned result.
     private val mRandom = Random()
 
-    override fun login(callbacks: Callbacks.LoginCallbacks) {
+    private fun isEmailValid(email: String): Boolean {
+        return Pattern.compile(
+                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+                        + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                        + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+                        + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
+        ).matcher(email).matches()
+    }
+
+    override fun login(userEmail: String, password: String, callbacks: Callbacks.LoginCallbacks) {
+
+        if (!isEmailValid(email = userEmail)) callbacks.onError(ErrorType.InvalidEmail)
 
         //so we have 2 booleans,
         //the first one is being used as a mock up for the
@@ -28,7 +43,7 @@ object DataRepository : Repository {
             val mLoginModel = LoginModel(mRandom.nextBoolean())
             callbacks.onSuccess(mLoginModel)
         } else {
-            callbacks.onError()
+            callbacks.onError(ErrorType.NetworkConnectionError)
         }
     }
 }
