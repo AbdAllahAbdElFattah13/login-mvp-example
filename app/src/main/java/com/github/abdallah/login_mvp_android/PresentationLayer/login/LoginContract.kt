@@ -22,9 +22,9 @@ interface LoginContract {
     interface Presenter : BasePresenter {
         fun handleOnLoginBtnClick(email: String, password: String)
 
-        fun onSuccess(model: LoginModel)
+        fun onLoginSuccess(model: LoginModel)
 
-        fun onError(error: ErrorType)
+        fun onLoginError(error: ErrorType)
     }
 
 }

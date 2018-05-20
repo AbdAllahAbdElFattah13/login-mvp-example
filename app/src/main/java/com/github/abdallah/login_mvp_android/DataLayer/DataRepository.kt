@@ -27,9 +27,14 @@ object DataRepository : Repository {
 
     override fun login(userEmail: String, password: String, callbacks: Callbacks.LoginCallbacks) {
 
+        //if it's not valid email, no need to simulate network call.
+        if (!isEmailValid(email = userEmail)) {
+            callbacks.onError(ErrorType.InvalidEmail)
+            return
+        }
+
         // Simulate network by delaying the execution.
         Handler().postDelayed({
-            if (!isEmailValid(email = userEmail)) callbacks.onError(ErrorType.InvalidEmail)
 
             //so we have 2 booleans,
             //the first one is being used as a mock up for the
@@ -43,7 +48,7 @@ object DataRepository : Repository {
                 //and password is correct?)
 
                 //PS: even if the returned result is false, we should
-                //invoke the onSuccess method, because after all
+                //invoke the onLoginSuccess method, because after all
                 //it's a successful network call.
                 val mLoginModel = LoginModel(mRandom.nextBoolean())
                 callbacks.onSuccess(mLoginModel)

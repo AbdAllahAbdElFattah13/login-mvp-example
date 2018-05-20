@@ -14,22 +14,22 @@ class LoginPresenter(repository: Repository, view: LoginContract.View) : LoginCo
         mView.setLoading(true)
         mRepository.login(email, password, object : Callbacks.LoginCallbacks {
             override fun onSuccess(resultModel: LoginModel) {
-                LoginPresenter@ this.onSuccess(resultModel)
+                LoginPresenter@ onLoginSuccess(resultModel)
             }
 
             override fun onError(error: ErrorType) {
-                LoginPresenter@ this.onError(error)
+                LoginPresenter@ onLoginError(error)
             }
         })
     }
 
-    override fun onSuccess(model: LoginModel) {
+    override fun onLoginSuccess(model: LoginModel) {
         mView.setLoading(false)
         if (model.result) mView.handleLoginSuccess()
         else mView.handleLoginFail()
     }
 
-    override fun onError(error: ErrorType) {
+    override fun onLoginError(error: ErrorType) {
         mView.setLoading(false)
         when (error) {
             ErrorType.NetworkConnectionError -> mView.handleNetworkError()
